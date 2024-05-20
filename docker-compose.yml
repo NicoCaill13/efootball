@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  nestjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000' # Port utilisé par l'application NestJS
+    depends_on:
+      - postgres
+    env_file:
+      - .env # Charger les variables d'environnement à partir du fichier .env
+    volumes:
+      - .:/app
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - '5432:5432' # Port utilisé par PostgreSQL
+    env_file:
+      - .env
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

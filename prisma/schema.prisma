@@ -1,0 +1,83 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model District {
+  id    Int    @id @default(autoincrement())
+  name  String
+  clubs Club[]
+}
+
+model Club {
+  id              Int             @id @default(autoincrement())
+  name            String
+  address         String
+  city            String
+  zipCode         String
+  phone           String
+  districtId      Int
+  district        District        @relation(fields: [districtId], references: [id])
+  coaches         Coach[]
+  teams           Team[]
+  playerHistories PlayerHistory[]
+}
+
+model Coach {
+  id         Int         @id @default(autoincrement())
+  fullName   String
+  experience String
+  clubId     Int
+  club       Club        @relation(fields: [clubId], references: [id])
+  teams      CoachTeam[] @relation("CoachToTeam")
+}
+
+model Team {
+  id        Int             @id @default(autoincrement())
+  teamName  String
+  teamLevel String
+  location  String
+  clubId    Int
+  club      Club            @relation(fields: [clubId], references: [id])
+  coaches   CoachTeam[]     @relation("TeamToCoach")
+  players   Player[]
+  histories PlayerHistory[]
+}
+
+model Player {
+  id                Int             @id @default(autoincrement())
+  fullName          String
+  preferredPosition String
+  skillLevel        String
+  height            Int
+  weight            Int
+  teamId            Int
+  team              Team            @relation(fields: [teamId], references: [id])
+  histories         PlayerHistory[]
+}
+
+model PlayerHistory {
+  id        Int       @id @default(autoincrement())
+  playerId  Int
+  player    Player    @relation(fields: [playerId], references: [id])
+  teamId    Int
+  team      Team      @relation(fields: [teamId], references: [id])
+  clubId    Int
+  club      Club      @relation(fields: [clubId], references: [id])
+  startDate DateTime
+  endDate   DateTime?
+}
+
+model CoachTeam {
+  coachId Int
+  coach   Coach @relation(fields: [coachId], references: [id], onDelete: Cascade, name: "CoachToTeam")
+  teamId  Int
+  team    Team  @relation(fields: [teamId], references: [id], onDelete: Cascade, name: "TeamToCoach")
+
+  @@id([coachId, teamId])
+}
