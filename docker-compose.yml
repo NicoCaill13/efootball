@@ -13,15 +13,23 @@ services:
       - .env # Charger les variables d'environnement à partir du fichier .env
     volumes:
       - .:/app
+    networks:
+      - nestjs
 
   postgres:
     image: postgres:latest
+    restart: always
     ports:
       - '5432:5432' # Port utilisé par PostgreSQL
     env_file:
       - .env
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - nestjs
 
 volumes:
   postgres-data:
+
+networks:
+  nestjs:

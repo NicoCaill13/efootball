@@ -39,9 +39,8 @@ async function main() {
   const club = [];
   for (let index = 0; index < clubs.length; index++) {
     const element = clubs[index];
-    console.log(element);
     const clubTemp = await prisma.club.upsert({
-      where: { id: index },
+      where: { id: index + 1 },
       update: {},
       create: {
         name: element.name,

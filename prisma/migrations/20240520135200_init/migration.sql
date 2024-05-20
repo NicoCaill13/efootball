@@ -10,7 +10,10 @@ CREATE TABLE "District" (
 CREATE TABLE "Club" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "zipCode" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
     "districtId" INTEGER NOT NULL,
 
     CONSTRAINT "Club_pkey" PRIMARY KEY ("id")

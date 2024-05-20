@@ -15,7 +15,12 @@ export class DistrictsService {
   }
 
   findOne(id: number) {
-    return this.prisma.district.findUnique({ where: { id } });
+    return this.prisma.district.findUnique({
+      where: { id },
+      include: {
+        clubs: true,
+      },
+    });
   }
 
   update(id: number, updateDistrictDto: UpdateDistrictDto) {
