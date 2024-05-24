@@ -1,6 +1,6 @@
 import { Club } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import { DistrictEntity } from 'src/districts/entities/district.entity';
+import { DistrictEntity } from '../../districts/entities/district.entity';
 
 export class ClubEntity implements Club {
   @ApiProperty()
